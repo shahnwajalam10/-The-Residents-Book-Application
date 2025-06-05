@@ -141,7 +141,7 @@ export default function App() {
           onClick={() => setShowForm(true)}
           className="px-6 py-2 bg-white border-2 border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] rounded font-semibold hover:bg-gray-100 active:shadow-none active:translate-x-[2px] active:translate-y-[2px] transition-all"
         >
-          Add Restaurant
+          Add Resident
         </button>
       </div>
 
