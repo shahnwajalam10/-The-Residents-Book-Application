@@ -1,7 +1,5 @@
 import { useEffect, useState } from "react";
 
-const fallbackImage = "https://via.placeholder.com/150?text=No+Image";
-
 const dummyUsers = [
   {
     _id: "dummy1",
@@ -32,8 +30,18 @@ const dummyUsers = [
   }
 ];
 
+function Navbar() {
+  return (
+    <nav className="bg-white border-b-2 border-black shadow-[0px_4px_0px_0px_rgba(0,0,0,1)] p-4">
+      <div className="max-w-6xl mx-auto flex justify-between items-center">
+        <h1 className="text-2xl font-bold text-black font-mono">The Residents Book</h1>
+      </div>
+    </nav>
+  );
+}
+
 function UserCard({ user, onClose }) {
-  const [imgSrc, setImgSrc] = useState(user.profilePhoto || fallbackImage);
+  const [imgSrc, setImgSrc] = useState(user.profilePhoto);
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-40 flex items-center justify-center z-50">
@@ -48,7 +56,7 @@ function UserCard({ user, onClose }) {
         <div className="flex items-center space-x-6">
           <img
             src={imgSrc}
-            onError={() => setImgSrc(fallbackImage)}
+            onError={() => setImgSrc("")}
             alt={`${user.firstName} ${user.lastName}`}
             className="w-24 h-24 rounded-full object-cover border-4 border-black"
           />
@@ -167,11 +175,13 @@ export default function App() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-100 p-6 overflow-auto">
+    <div className="min-h-screen bg-gray-100 overflow-auto">
+      <Navbar />
+
       <div className="text-center my-6">
         <button
           onClick={() => setShowForm(true)}
-          className="px-6 py-2 bg-white border-2 border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] rounded font-semibold hover:bg-gray-100 active:shadow-none active:translate-x-[2px] active:translate-y-[2px] transition-all"
+          className="px-6 py-2 bg-white border-2 border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] rounded font-semibold hover:bg-gray-100 active:shadow-none active:translate-x-[2px] active:translate-y-[2px] transition-all font-mono"
         >
           Add Resident
         </button>
@@ -229,10 +239,10 @@ export default function App() {
             className="cursor-pointer bg-white border-2 border-black rounded-xl shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] p-4 flex items-center space-x-4 transition hover:shadow-none hover:translate-x-[2px] hover:translate-y-[2px]"
           >
             <img
-              src={user.profilePhoto || fallbackImage}
-              onError={(e) => (e.target.src = fallbackImage)}
+              src={user.profilePhoto}
               alt={`${user.firstName} ${user.lastName}`}
               className="w-16 h-16 rounded-full border-2 border-black object-cover"
+              onError={(e) => (e.target.src = "")}
             />
             <div>
               <h3 className="font-bold text-lg text-black">
