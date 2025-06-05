@@ -2,6 +2,36 @@ import { useEffect, useState } from "react";
 
 const fallbackImage = "https://via.placeholder.com/150?text=No+Image";
 
+const dummyUsers = [
+  {
+    _id: "dummy1",
+    firstName: "Alice",
+    lastName: "Johnson",
+    title: "Frontend Developer",
+    profilePhoto: "https://randomuser.me/api/portraits/women/1.jpg",
+    linkedIn: "https://linkedin.com/in/alicejohnson",
+    twitter: "https://twitter.com/alicejohnson"
+  },
+  {
+    _id: "dummy2",
+    firstName: "Bob",
+    lastName: "Smith",
+    title: "Backend Engineer",
+    profilePhoto: "https://randomuser.me/api/portraits/men/2.jpg",
+    linkedIn: "https://linkedin.com/in/bobsmith",
+    twitter: ""
+  },
+  {
+    _id: "dummy3",
+    firstName: "Clara",
+    lastName: "Lee",
+    title: "UI/UX Designer",
+    profilePhoto: "https://randomuser.me/api/portraits/women/3.jpg",
+    linkedIn: "",
+    twitter: "https://twitter.com/claralee"
+  }
+];
+
 function UserCard({ user, onClose }) {
   const [imgSrc, setImgSrc] = useState(user.profilePhoto || fallbackImage);
 
@@ -61,11 +91,11 @@ export default function App() {
     title: "",
     profilePhoto: "",
     linkedIn: "",
-    twitter: "",
+    twitter: ""
   });
 
   const [loading, setLoading] = useState(false);
-  const [users, setUsers] = useState([]);
+  const [users, setUsers] = useState(dummyUsers);
   const [selectedUser, setSelectedUser] = useState(null);
   const [showForm, setShowForm] = useState(false);
 
@@ -74,7 +104,9 @@ export default function App() {
       try {
         const res = await fetch("https://the-residents-book-application-1.onrender.com/users");
         const result = await res.json();
-        setUsers(result.users || []);
+        if (result.users && result.users.length > 0) {
+          setUsers(result.users);
+        }
       } catch (err) {
         console.error("Error fetching users:", err);
       }
@@ -86,7 +118,7 @@ export default function App() {
   const handleChange = (e) => {
     setFormData((prev) => ({
       ...prev,
-      [e.target.name]: e.target.value,
+      [e.target.name]: e.target.value
     }));
   };
 
@@ -104,9 +136,9 @@ export default function App() {
       const res = await fetch("https://the-residents-book-application-1.onrender.com/users", {
         method: "POST",
         headers: {
-          "Content-Type": "application/json",
+          "Content-Type": "application/json"
         },
-        body: JSON.stringify(formData),
+        body: JSON.stringify(formData)
       });
 
       const result = await res.json();
@@ -116,14 +148,14 @@ export default function App() {
       } else {
         setUsers((prev) => [...prev, result.user]);
         setSelectedUser(result.user);
-        setShowForm(false); // Close form
+        setShowForm(false);
         setFormData({
           firstName: "",
           lastName: "",
           title: "",
           profilePhoto: "",
           linkedIn: "",
-          twitter: "",
+          twitter: ""
         });
       }
     } catch (err) {
@@ -203,16 +235,16 @@ export default function App() {
               className="w-16 h-16 rounded-full border-2 border-black object-cover"
             />
             <div>
-              <h3 className="font-bold text-lg text-black">{user.firstName} {user.lastName}</h3>
+              <h3 className="font-bold text-lg text-black">
+                {user.firstName} {user.lastName}
+              </h3>
               <p className="text-gray-700 text-sm">{user.title}</p>
             </div>
           </div>
         ))}
       </div>
 
-      {selectedUser && (
-        <UserCard user={selectedUser} onClose={() => setSelectedUser(null)} />
-      )}
+      {selectedUser && <UserCard user={selectedUser} onClose={() => setSelectedUser(null)} />}
     </div>
   );
 }
